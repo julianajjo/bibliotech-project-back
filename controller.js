@@ -1,64 +1,68 @@
-const booksData = [
-  {
-    "title": "Um defeito de cor",
-    "author": " Ana Maria Gonçalves ",
-    "publisher": "Record",
-    "edition": "28",
-    "publication_year": 2006,
-    "number_of_pages": 952,
-    "language": "Português",
-    "format": "Livro",
-    "availability": "Sim",
-    "image_link": "src/images/bibliotech-book.png",
-    "link": "https://a.co/d/eGNS6j0"
-  },
-  {
-    "title": "Um defeito de cor",
-    "author": " Ana Maria Gonçalves ",
-    "publisher": "Record",
-    "edition": "28",
-    "publication_year": 2006,
-    "number_of_pages": 952,
-    "language": "Português",
-    "format": "Livro",
-    "availability": "Sim",
-    "image_link": "src/images/bibliotech-book.png",
-    "link": "https://a.co/d/eGNS6j0"
-  },
-  {
-    "title": "Um defeito de cor",
-    "author": " Ana Maria Gonçalves ",
-    "publisher": "Record",
-    "edition": "28",
-    "publication_year": 2006,
-    "number_of_pages": 952,
-    "language": "Português",
-    "format": "Livro",
-    "availability": "Sim",
-    "image_link": "src/images/bibliotech-book.png",
-    "link": "https://a.co/d/eGNS6j0"
-  },
-  {
-    "title": "Um defeito de cor",
-    "author": " Ana Maria Gonçalves ",
-    "publisher": "Record",
-    "edition": "28",
-    "publication_year": 2006,
-    "number_of_pages": 952,
-    "language": "Português",
-    "format": "Livro",
-    "availability": "Sim",
-    "image_link": "src/images/bibliotech-book.png",
-    "link": "https://a.co/d/eGNS6j0"
-  },
-];
+// const booksData = [
+//   {
+//     "title": "Um defeito de cor",
+//     "author": " Ana Maria Gonçalves ",
+//     "publisher": "Record",
+//     "edition": "28",
+//     "publication_year": 2006,
+//     "number_of_pages": 952,
+//     "language": "Português",
+//     "format": "Livro",
+//     "availability": "Sim",
+//     "image_link": "src/images/bibliotech-book.png",
+//     "link": "https://a.co/d/eGNS6j0"
+//   },
+//   {
+//     "title": "Um defeito de cor",
+//     "author": " Ana Maria Gonçalves ",
+//     "publisher": "Record",
+//     "edition": "28",
+//     "publication_year": 2006,
+//     "number_of_pages": 952,
+//     "language": "Português",
+//     "format": "Livro",
+//     "availability": "Sim",
+//     "image_link": "src/images/bibliotech-book.png",
+//     "link": "https://a.co/d/eGNS6j0"
+//   },
+//   {
+//     "title": "Um defeito de cor",
+//     "author": " Ana Maria Gonçalves ",
+//     "publisher": "Record",
+//     "edition": "28",
+//     "publication_year": 2006,
+//     "number_of_pages": 952,
+//     "language": "Português",
+//     "format": "Livro",
+//     "availability": "Sim",
+//     "image_link": "src/images/bibliotech-book.png",
+//     "link": "https://a.co/d/eGNS6j0"
+//   },
+//   {
+//     "title": "Um defeito de cor",
+//     "author": " Ana Maria Gonçalves ",
+//     "publisher": "Record",
+//     "edition": "28",
+//     "publication_year": 2006,
+//     "number_of_pages": 952,
+//     "language": "Português",
+//     "format": "Livro",
+//     "availability": "Sim",
+//     "image_link": "src/images/bibliotech-book.png",
+//     "link": "https://a.co/d/eGNS6j0"
+//   },
+// ];
+const mongoose = require('mongoose')
+const Book = require("./model")
 
-const getAll = function(request, response) {
-  response.json({books: booksData})
+const getAll = async function(request, response) {
+  const books = await Book.find()
+  response.json(books)
 }
 
-const create = function(request, response) {
-  const newBook = {
+const create = async function(request, response) {
+  const newBook = new Book({
+    _id: new mongoose.Types.ObjectId(),
     title: request.body.title,
     author: request.body.author,
     publisher: request.body.publisher,
@@ -70,9 +74,10 @@ const create = function(request, response) {
     availability: request.body.availability,
     image_link: request.body.image_link,
     link: request.body.link
-  }
-  const updatedBooks = [...booksData, newBook]
-  response.json({updatedBooks})
+  })
+
+  const bookCreated = await newBook.save()
+  response.json({bookCreated})
 }
 
 module.exports = {
