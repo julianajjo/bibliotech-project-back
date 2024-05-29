@@ -38,7 +38,6 @@ const update = async function(request, response) {
     language: request.body.language,
     format: request.body.format,
     availability: request.body.availability,
-    image_link: request.body.image_link,
     link: request.body.link
   };
 
@@ -54,8 +53,24 @@ const update = async function(request, response) {
   }
 };
 
+const deleteBook = async function(request, response) {
+  const { id } = request.params;
+
+  try {
+    const deletedBook = await Book.findByIdAndDelete(id);
+    if (deletedBook) {
+      response.json({ message: "Book successfully deleted", deletedBook });
+    } else {
+      response.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAll,
   create,
-  update
+  update,
+  deleteBook
 }
